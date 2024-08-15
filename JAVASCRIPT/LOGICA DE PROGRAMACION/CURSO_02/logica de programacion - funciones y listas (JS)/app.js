@@ -8,8 +8,9 @@
 
 //Código optimizado:
 
-let numeroSecreto = generarNumeroSecreto()
+let numeroSecreto = 0
 console.log(numeroSecreto)
+let intentos = 1
 
 
 function asignarTextoElementoHtml(elemento, texto){
@@ -17,21 +18,22 @@ function asignarTextoElementoHtml(elemento, texto){
   elementoHTML.innerHTML = texto
 }
 
-asignarTextoElementoHtml("h1", "Juego del número secreto ")
-asignarTextoElementoHtml("p","Escoge un número del 1 al 100")
-
-
 
 function verificarIntento(){
   numeroSecreto
   let numeroUsuario = parseInt(document.getElementById("input-id").value)
   //console.log(numeroUsuario)
   if (numeroSecreto == numeroUsuario) {
-    console.log("true")
-    return true
+    document.getElementById("reiniciar").removeAttribute("disabled")
+    asignarTextoElementoHtml("p", `Acertastes en ${intentos} ${(intentos == 1) ? 'vez' : 'veces'}`)
   }else {
-    console.log('false')
-    return false
+    if (numeroSecreto > numeroUsuario) {
+      asignarTextoElementoHtml("p", "Fallaste, el número secreto es mayor")
+    }else {
+      asignarTextoElementoHtml("p", "Fallaste, el número secreto es menor")
+    }
+    intentos++
+    limpiarInput()
   }
  
 }
@@ -41,4 +43,25 @@ function generarNumeroSecreto(){
   return numeroSecreto
 }
 
+function limpiarInput(){
+  document.getElementById("input-id").value = ""
+}
 
+function reiniciarJuego(){
+  limpiarInput()
+  condicionesIniciales()
+}
+
+
+function condicionesIniciales(){
+  numeroSecreto = generarNumeroSecreto()
+
+  asignarTextoElementoHtml("h1", "Juego del número secreto ")
+  asignarTextoElementoHtml("p","Escoge un número del 1 al 10")
+
+  document.getElementById("reiniciar").setAttribute("disabled","true")
+
+  intentos = 1
+}
+
+condicionesIniciales()
